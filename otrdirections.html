@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Driver Check-In</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Your CSS styles here (same as provided) */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: #ffffff; /* White background */
+            color: #ffc220; /* Yellow text */
+            text-align: center; /* Center text */
+            position: relative; /* Added for footer placement */
+            padding-bottom: 20px; /* Space for the footer */
+        }
+
+        h1, h2 {
+            color: #ffc220; /* Yellow text */
+            text-align: center;
+        }
+
+        p {
+            margin-bottom: 1.5em;
+        }
+
+        .container {
+            background: #0071ce; /* Entry screen box background */
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 2px solid #ffc220; /* Yellow border */
+            position: relative;
+        }
+
+        select, input[type="text"], input[type="number"], input[type="file"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ffc220; /* Yellow border */
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #ffffff; /* White background */
+            color: #000000; /* Black text */
+            font-family: Arial, sans-serif; /* Set font to Arial */
+            text-align: center; /* Center text */
+        }
+
+        textarea {
+            resize: none; /* Disable resizing */
+            height: 200px; /* Fixed height */
+        }
+
+        button {
+            background-color: #ffc220; /* Yellow background */
+            color: #000000; /* Black text */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+
+        button:hover {
+            background-color: #ffdd57; /* Lighter yellow on hover */
+        }
+
+        .home-button, .back-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .home-button i, .back-button i {
+            color: #ffc220; /* Yellow color for icon */
+            font-size: 24px;
+        }
+
+        .home-button:hover i, .back-button:hover i {
+            color: #ffdd57; /* Lighter yellow on hover */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .instructions-textbox {
+            background-color: #ffffff; /* White background */
+            border: 1px solid #ffc220; /* Yellow border */
+            color: #000000; /* Black text */
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px; /* Add space below the text box */
+            border-radius: 5px;
+            font-family: Arial, sans-serif; /* Match font with the rest of the site */
+            line-height: 1.6; /* Match line height */
+            text-align: left; 
+        }
+
+        .next-steps-textbox {
+            background-color: #ffffff; /* White background */
+            border: 1px solid #ffc220; /* Yellow border */
+            color: #000000; /* Black text */
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px; /* Add space below the text box */
+            border-radius: 5px;
+            font-family: Arial, sans-serif; /* Match font with the rest of the site */
+            line-height: 1.6; /* Match line height */
+            text-align: center; 
+        }
+        .safety-content {
+            display: flex;
+            flex-direction: row; /* Changed to row for image alignment */
+            align-items: flex-start; /* Align items at the top */
+            justify-content: space-between; /* Space between text and image */
+        }
+
+        .image-section {
+            text-align: center;
+            margin-left: 20px; /* Space between text and image */
+        }
+
+        .image-section img {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 10px;
+            border: 2px solid #ffc220; /* Yellow border */
+        }
+
+        .text-section {
+            flex: 1;
+            margin-right: 20px; /* Space on the right */
+        }
+
+        .centered-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .centered-form-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .centered-form label, .centered-form input[type="text"], .centered-form button {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .footer {
+            position: center;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background-color: #ffffff; /* White background */
+            color: #0071ce; /* Blue text */
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold; /* Bold text */
+        }
+
+        .direction-textbox {
+            background-color: #ffffff; /* White background */
+            border: 1px solid #ffc220; /* Yellow border */
+            color: #000000; /* Black text */
+            padding: 0px;
+            display: none;
+            margin-top: 20px;
+            margin-bottom: 10px; /* Add space after the text box */
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            text-align: center; /* Center text */
+        
+        } 
+
+        .directions {
+            display: none; /* Initially hide all direction messages */
+            background-color: #ffffff; /* White background */
+            border: 1px solid #ffc220; /* Yellow border */
+            color: #000000; /* Black text */
+            padding: 0px;
+            display: none;
+            margin-top: 20px;
+            margin-bottom: 10px; /* Add space after the text box */
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            text-align: center; /* Center text */
+        }
+
+        .next-steps-screen {
+            display: none;
+            background: #0071ce; /* Background for the info screen */
+            padding: 20px;
+            border-radius: 5px;
+            border: 2px solid #ffc220; /* Yellow border */
+            color: #ffc220; /* Yellow text */
+            text-align: center; /* Center text */
+            
+        }
+
+        /* Media Queries for Mobile Screens */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            .instructions-textbox, .direction-textbox {
+                font-size: 14px; /* Adjust font size for readability on small screens */
+            }
+
+            .image-section {
+                margin-left: 0;
+                margin-top: 20px; /* Space between text and image for mobile view */
+            }
+
+            .image-section img {
+                max-width: 100%; /* Ensure images fit within the mobile screen */
+            }
+
+            .safety-content {
+                flex-direction: column;
+            }
+
+            .text-section {
+                margin-right: 0;
+            }
+
+            .home-button, .back-button {
+                top: 5px;
+                right: 5px;
+            }
+
+            button {
+                padding: 8px 16px;
+            }
+           
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Home Page -->
+        <div id="home-page" class="container hidden">
+            <button class="home-button" onclick="goToHome()">
+                <i class="fas fa-home"></i>
+            </button>
+            <h2 id="home-title">Home Page</h2>
+            <!-- OTR Map from printed Excel sheet screenshot-->
+            <img src="Screenshot 2024-08-16 061512.png" alt="Parking Lot Map" style="width:100%; max-height: 500px; object-fit: cover;">
+            <p class="section-header" p id="home-key" style="font-weight:bold;">Map Key:</p>
+            <img src="Screenshot 2024-08-16 063529.png" alt="Dock Door" style="width:100%; max-height: 100px; max-width:100px">
+            <p>Dock Doors</p>
+            <img src="Screenshot 2024-08-16 062653.png" alt="Waiting Area" style="width:100%; max-height: 100px; max-width:100px">
+            <p>Waiting Area</p>
+            <!-- Add more elements to the map key here!-->
+        </div>
+
+        <!-- Language Selection Screen -->
+        <div id="language-selection" class="container">
+            <button class="home-button" onclick="goToHome()">
+                <i class="fas fa-home"></i>
+            </button>
+            <h2 id="language-title">Select Language</h2>
+            <form id="language-form">
+                <label for="language" id="language-label">Choose a language:</label>
+                <select id="language-select" onchange="selectLanguage()">
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                    <option value="es">Spanish</option>
+                    <option value="ru">Russian</option>
+                    <!-- Add more options for language drop down here-->
+                </select>
+                <button type="button" onclick="goToSafetyGuidelines()" id="next-button">Next</button>
+            </form>
+        </div>
+
+        <div id="safety-guidelines" class="container hidden">
+            <button class="home-button" onclick="goToHome()">
+                <i class="fas fa-home"></i>
+            </button>
+            <h2 id="safety-title">Safety Guidelines</h2>
+            <div class="safety-content">
+                <div class="text-section">
+                    <p class="section-header" p id="safety-text" style="font-weight:bold;">Please read and acknowledge the safety guidelines below:</p>
+                    <div class="instructions-textbox" style="width:150%;max-width:150px;"
+                    </ol>
+                        <p class="section-header" p id="no-idling" style="font-weight:bold;">No Idling Policy: DO NOT keep your tractor running for more than THREE (3) MINUTES.</p>
+                        <p></p>
+                        <p class="section-header" p id="upon-arrival" style="font-weight:bold;">Upon Arrival at the Dock Door:</p>
+                        <ol>
+                            <li><p id="guideline-1">Assigned dock door should be clear with a green light.</p></li>
+                            <li>Dolly down and chock the trailer wheels.</li>
+                            <li>Unlatch the trailer and pull forward until the fifth wheel is clear of the trailer or pull out from under the trailer and park the tractor 10 feet in front of the trailer.</li>
+                            <li>Tractors must be latched to pup trailers with trailer wheels chocked and tractor keys taken to the Traffic Office.</li>
+                            <li>Do not move your trailer without written approval.</li>
+                            <li>If the freight requires refrigeration, you must turn off the reefer unit unless specifically directed to leave it running.</li>
+                            <li>Make sure your trailer tandems are slid all the way to the rear of the trailer.</li>
+                        </ol>
+                        <p class="section-header" style="font-weight:bold;">After Documented Trailer Release is Given to You by the Freight Bill Clerk:</p>
+                        <ol>
+                            <li>Check the red and green lights at the rear of the trailer. Green light must be on before re-latching to the trailer.</li>
+                            <li>If the red light is on, do not move your tractor/trailer. Contact the dock Supervisor or Manager who will determine if the trailer is ready to be released and will notify you to move or not to move your tractor/trailer.</li>
+                            <li>Pull your tractor/trailer forward approximately one (1) foot.</li>
+                            <li>Get out of your tractor and visually check to see if the warehouse dock door has been closed.</li>
+                            <li>If the warehouse dock door is not closed, do not move your tractor/trailer. Contact the Dock Supervisor/Manager who will determine if the trailer is ready to be released and will notify you to move or not to move your tractor/trailer.</li>
+                            <li>If the warehouse dock door is closed, proceed to the Truck Gate exit.</li>
+                        </ol>
+                        <p class="section-header" style="font-weight:bold;">While in Our Distribution Center:</p>
+                        <ol>
+                            <li>No smoking, chewing, or dipping is allowed on the dock or inside the trailers. </li>
+                            <li>Shoes and shirt must be always worn. </li>
+                            <li>Use of profanity is prohibited. </li>
+                            <li>No one under the age of 18 is allowed in the unloading area. </li>
+                            <li>Drivers must go to the lounge during breaks and lunch. </li>
+                            <li>Bad pallets must be down stacked or re-stacked onto good pallets. 
+                            <li>Drivers are required to unload at Walmart’s discretion. Lumpers are not permitted, and Drivers/co-Drivers will not be allowed to use power equipment. Appointment Drivers at Grocery Distribution Centers should see Appointment Clerk for additional information. 
+                            <li>Rescheduling of appointments is required if you are more than one (1) hour late for your appointment. 
+                            <li>Firearms, drugs, or alcoholic beverages are not allowed on company property. 
+                            <li>Visitor badges must be always worn visibly. 
+                        </ol>
+                        <p class="section-header" style="font-weight:bold;">For Drop, Bobtail, and Backhaul Drivers:</p>
+                        <ol>
+                                <li>Do NOT pull any trailer from a dock door. If you have a need for a trailer that is staged in a dock door, report it to the Traffic Office immediately. A Yard Driver will be notified to pull the trailer. </li>
+                                <li>Make sure that your trailer tandems are slid all the way to the rear of the trailer. </li>
+                                <li>Do NOT remove seal from trailers.</li>
+                                <li>Do NOT remove trailer tags from trailers. </li>
+                                <li>Report any and all trailer damage immediately to Asset Protection at the Truck Gate. </li>
+                                <li>Make sure that all trash and debris is deposited in the proper receptacle. </li>
+                                <li>When leaving the facility, stop at the Truck Gate and exit your tractor. Meet the Asset Protection associate at the rear of the trailer. </li>
+                        </ol>
+                    </div>
+            <div class="centered-form">
+                <label for="initials" id="initials-label">Enter your initials to acknowledge:</label>
+                <input type="text" id="initials" required>
+                <button type="button" onclick="submitInitials()" id="acknowledge-button">Acknowledge</button>
+            </div>
+                </div>
+                <div class="image-section" style="width:100%;max-width:220px;".
+            </ol>
+                <img src="Screenshot 2024-07-12 111805.png" alt="Speed Limit" style="height:100%;max-width:220px;max-height:220px" >
+                <img src= "Screenshot 2024-07-12 105458.png" alt="No Idling">
+                <img src= "Picture1.jpg" alt="Chocked Wheels">
+                <img src= "Picture2.jpg" alt="Dolly Down">
+                <img src="Screenshot 2024-07-14 112946.png" alt="10 feet disconnect" style="height:200%;max-width:220px;max-height:450px">
+                <img src="Screenshot 2024-07-12 095249.png" alt="Green Light" style="width:200%;max-width:220px;max-height:450px">
+                <img src="Screenshot 2024-07-12 092733.png" alt="Dock Door Closed" style="width:200%;max-width:220px;max-height:600px">
+                <img src="IMG_1478.jpg" alt="Truck Gate Trash Can"  style="height:100%;max-width:300px;max-height:400px">
+            </div>
+            </div>
+        </div>
+
+        <!-- Door Number Input Screen -->
+        <div id="door-number-screen" class="container hidden">
+            <button class="home-button" onclick="goToHome()">
+                <i class="fas fa-home"></i>
+            </button>
+            <h2 id="door-number-title">Enter Dock Door Number</h2>
+            <div class="subtitle" id="assigned-wait">If assigned to the waiting area or you don't have a door yet, please type the number 0.</div>
+            <div class="centered-form">
+                <label for="doorNumber" id="door-number-label">Dock Door Number:</label>
+                <input type="number" id="doorNumber" required min="0" max="71">
+                <button type="button" onclick="submitDoorNumber()" id="submit-door-button">Submit</button>
+            </div>
+        </div>
+
+        <!-- Directions Screen -->
+        <div id="directions-screen" class="container hidden">
+            <button class="home-button" onclick="goToHome()">
+                <i class="fas fa-home"></i>
+            </button>
+            <h1>Directions</h1>
+            <div id="waitingAreaMessage" class="directions">
+                <p></p>
+                <p class="section-header" style="font-weight:bold;">Please proceed to the waiting area.</p>
+                <p class="section-header" style="font-weight:bold;">No Idling Policy: DO NOT keep your tractor running for more than THREE (3) MINUTES.</p>
+                <p></p>
+                <p class="section-header" style="font-weight:bold;">After checking in at the Truck Gate:</p>
+                    <p>Go straight at the intersection and follow the yellow arrows.</p>
+                    <img src="Screenshot 2024-07-14 113102.png" style="height:100%;max-width:500px;max-height:500px">
+                    <p></p>
+                <p class="section-header" style="font-weight:bold;">When you reach the breezeway, the spots to the right on the back fence are the waiting area.</p>
+                <img src="Screenshot 2024-08-16 091358.png" style="height:100%;max-width:500px;max-height:500px">
+                <p class="section-header" style="font-weight:bold;">These spots should fall inbetween zones A1 and A2. </p>
+                <p>After parking, walk your paper work to the Central Receiving Office (CRO) at door 25. It is directly through the breezeway, across from the waiting area. Refrence the yard map by clicking the Home button.</p>
+                <img src="Screenshot 2024-08-16 091711.png" style="height:100%;max-width:500px;max-height:500px">
+                <p class="section-header" style="font-weight:bold;">Don't forget to wear a high visibility reflective vest while walking in the yard.</p>
+                <img src="Screenshot 2024-08-15 235517.png" style="height:100%;max-width:500px;max-height:500px">
+                <p>CRO will call you when there is a dock door ready for you to move in to. When you get the door, type in the number on the previous screen for directions.</p>
+            </div>
+            <div id="whiteArrowDirections" class="directions">
+                <p class="section-header" style="font-weight:bold;">Please proceed to dock doors 1-33.</p>
+                <p class="section-header" style="font-weight:bold;">After checking in at the Truck Gate:</p>
+                <p>Take a left at the intersection and follow the white arrows.</p>
+                <img src="Screenshot 2024-07-14 113138.png" style="height:100%;max-width:500px;max-height:500px">
+                <p>Take a right to reach the dock doors. Refrence a map of the yard by clicking the home button.</p>
+                <p>Find your dock door number and park your trailer. Follow the Safety Guidelines: Bump the dock, dolly down, chock your wheels, and fully disconnect.</p>
+                <p>If your trailer has swing doors: Park a few feet infront of the dock door and open the doors. Then back up and bump the dock and follow the safety guidelines.</p>
+                <p class="section-header" style="font-weight:bold;">Click "I've arrived" when finished parking.</p>
+            
+            </div>
+            <div id="yellowArrowDirections" class="directions">
+                <p class="section-header" style="font-weight:bold;">Please proceed to dock doors 34-71.</p>
+                <p class="section-header" style="font-weight:bold;">After checking in at the Truck Gate:</p>
+                <p>Go straight at the intersection and follow the yellow arrows.</p>
+                <img src="Screenshot 2024-07-14 113102.png" style="height:100%;max-width:500px;max-height:500px">
+                <p>Take a left at the breezeway, then turn right at the end of the breezeway to reach the dock doors. Refrence a map of the yard by clicking the home button.</p>
+                <img src="Screenshot 2024-07-14 213834.png" style="height:100%;max-width:450px;max-height:450px">
+                <p>Find your dock door number and park your trailer. Follow the Safety Guidelines: Bump the dock, dolly down, chock your wheels, and fully disconnect.</p>
+                <p>If your trailer has swing doors: Park a few feet infront of the dock door and open the doors. Then back up and bump the dock and follow the safety guidelines.</p>
+                <p class="section-header" style="font-weight:bold;">Click "I've arrived" when finished parking.</p>
+            </div>
+            <button type="button" onclick="proceedToNextSteps()" id="arrival-button">I've arrived</button>
+        </div>
+
+        <!-- Next Steps Screen -->
+        <div id="next-steps-screen" class="container hidden">
+            <button class="home-button" onclick="goToHome()">
+                <i class="fas fa-home"></i>
+            </button>
+            <h2 id="next-steps-title">Next Steps</h2>
+            <div id="next-steps-message" class="next-steps-textbox">
+                <p class="section-header" style="font-weight:bold;">After parking, walk your paper work to the Central Receiving Office (CRO) at door 25. It is directly through the breezeway. Refrence the yard map by clicking the Home button.</p>
+                <p class="section-header" style="font-weight:bold;">Don't forget to wear a high visibility reflective vest while walking in the yard.</p>
+                <img src="Screenshot 2024-08-15 235517.png" style="height:100%;max-width:500px;max-height:500px">
+                <p></p>
+                <p></p>
+                <p>CRO will call you when your paper work is complete. </p>
+                <p>Following the call get out of your vehicle and walk to the Central Receiving Office (CRO). Follow the safety guidelines.</p>
+                <img src="Screenshot 2024-08-16 091711.png" style="height:100%;max-width:500px;max-height:500px">
+                <p>After picking up your paperwork, wait for a green light on the dock before pulling out.</p>
+                <p class="section-header" style="font-weight:bold;">Before checking out with the Truck Gate, please dispose of any trash you have in the dumpster provided by CRO.</p>
+                <img src="IMG_1478.jpg" style="height:100%;max-width:500px;max-height:500px">
+                <p>After disposing of trash properly, you may proceed to the Truck Gate and check out with an AP Associate. </p>
+                <p class="section-header" style="font-weight:bold;">Please use the right lane when exiting.</p>
+                <img src="IMG_1505.jpg" style="height:100%;max-width:500px;max-height:500px">
+            </div>
+        </div>
+
+        <div class="footer" id="contact-dc">
+            <p class="section-header" style="font-weight:bold;" id="contact-dc">Please contact the DC at (321) 504-0120 if you have any questions or concerns. Acess a map of the yard by clicking on the Home button in the top right corner.</p>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript logic and functions
+        const translations = {
+    en: {
+        guideline1: "Assigned dock door should be clear with a green light.",
+        guideline2: "2. Always wear your seatbelt while driving.",
+        guideline3: "3. Follow all posted signs and instructions.",
+        guideline4: "4. Do not use your phone while driving.",
+        guideline5: "5. Report any hazards or unsafe conditions immediately."
+    },
+    fr: {
+        guideline1: "La porte du quai assignée doit être dégagée avec un feu vert.",
+        guideline2: "2. Portez toujours votre ceinture de sécurité en conduisant.",
+        guideline3: "3. Suivez tous les panneaux et instructions affichés.",
+        guideline4: "4. Ne pas utiliser votre téléphone en conduisant.",
+        guideline5: "5. Signalez immédiatement tout danger ou condition dangereuse."
+    },
+    es: {
+        guideline1: "La puerta del muelle asignada debe estar despejada y con una luz verde.",
+        guideline2: "2. Siempre use su cinturón de seguridad mientras conduce.",
+        guideline3: "3. Siga todas las señales e instrucciones publicadas.",
+        guideline4: "4. No use su teléfono mientras conduce.",
+        guideline5: "5. Informe cualquier peligro o condición insegura inmediatamente."
+    },
+    ru: {
+        guideline1: "Назначенная дверь дока должна быть освещена зеленым светом.",
+    }
+};
+
+let language = 'en'; // Default language
+let initials = '';
+
+// Write new elements to translate here!
+function selectLanguage() {
+    const languageSelect = document.getElementById('language-select');
+    language = languageSelect.value;
+
+    // Update page content based on selected language
+    // Write the element id from a line of text in the code
+    document.getElementById('page-title').innerText = language === 'fr' ? 'Enregistrement du conducteur' : language === 'es' ? 'Registro de conductor' : 'Driver Check-In';
+    document.getElementById('language-title').innerText = language === 'fr' ? 'Sélectionner la langue' : language === 'es' ? 'Seleccionar idioma' : 'Select Language';
+    document.getElementById('language-label').innerText = language === 'fr' ? 'Choisissez une langue:' : language === 'es' ? 'Elige un idioma:' : 'Choose a language:';
+    document.getElementById('next-button').innerText = language === 'fr' ? 'Suivant' : language === 'es' ? 'Siguiente' : 'Next';
+    document.getElementById('safety-title').innerText = language === 'fr' ? 'Consignes de sécurité' : language === 'es' ? 'Normas de seguridad' : 'Safety Guidelines';
+    document.getElementById('safety-text').innerText = language === 'fr' ? 'Veuillez lire et reconnaître les consignes de sécurité ci-dessous:' : language === 'es' ? 'Lea y reconozca las normas de seguridad a continuación:' : 'Please read and acknowledge the safety guidelines below:';
+    document.getElementById('initials-label').innerText = language === 'fr' ? 'Entrez vos initiales pour reconnaître:' : language === 'es' ? 'Ingrese sus iniciales para reconocer:' : 'Enter your initials to acknowledge:';
+    document.getElementById('acknowledge-button').innerText = language === 'fr' ? 'Reconnaître' : language === 'es' ? 'Reconocer' : 'Acknowledge';
+    document.getElementById('door-number-title').innerText = language === 'fr' ? 'Entrez le numéro de la porte du quai' : language === 'es' ? 'Ingrese el número de la puerta del muelle' : 'Enter Dock Door Number';
+    document.getElementById('door-number-label').innerText = language === 'fr' ? 'Numéro de la porte du quai:' : language === 'es' ? 'Número de la puerta del muelle:' : 'Dock Door Number:';
+    document.getElementById('submit-door-button').innerText = language === 'fr' ? 'Soumettre' : language === 'es' ? 'Enviar' : 'Submit';
+    document.getElementById('directions-title').innerText = language === 'fr' ? 'Itinéraire' : language === 'es' ? 'Direcciones' : 'Directions';
+    document.getElementById('arrival-button').innerText = language === 'fr' ? 'Je suis arrivé' : language === 'es' ? 'He llegado' : 'I\'ve arrived';
+    document.getElementById('next-steps-title').innerText = language === 'fr' ? 'Prochaines étapes' : language === 'es' ? 'Próximos pasos' : 'Next Steps';
+    document.getElementById('next-steps-message').innerText = language === 'fr' ? 'Descendez de votre véhicule et rendez-vous à l\'accueil central (CRO). Suivez les consignes de sécurité.' : language === 'es' ? 'Salga de su vehículo y camine hasta la Oficina de Recepción Central (CRO). Siga las normas de seguridad.' : 'Get out of your vehicle and walk to the Central Receiving Office (CRO). Follow the safety guidelines.';
+    document.getElementById('guideline-1').innerText = language === 'fr' ? 'La porte du quai assignée doit être dégagée avec un feu vert.' : language === 'es' ? 'La puerta del muelle asignada debe estar despejada y con una luz verde.' : language === 'ru' ? 'Назначенная дверь дока должна быть освещена зеленым светом.' :'Assigned dock door should be clear with a green light.';
+    document.getElementById('contact-dc').innerText = language === 'fr' ? 'Veuillez contacter le DC au (321) 504-0120 si vous avez des questions ou des préoccupations. Accédez à un plan du chantier en cliquant sur le bouton Accueil dans le coin supérieur droit.' : language === 'es' ? 'Fa\'amolemole fa\'afeso\'ota\'i le DC i le (321) 504-0120 pe a iai ni au fesili po\'o ni atugaluga. Su\'e se fa\'afanua o le fanua e ala i le kiliki i le Home button i le tulimanu pito i luga taumatau.' : 'Please contact the DC at (321) 504-0120 if you have any questions or concerns. Acess a map of the yard by clicking on the Home button in the top right corner.';
+    document.getElementById('no-idling').innerText = language === 'fr' ? 'Aucune politique de marche au ralenti : NE laissez PAS votre tracteur fonctionner pendant plus de TROIS (3) MINUTES.' : language === 'es' ? 'Política de no ralentí: NO mantenga el tractor en marcha durante más de TRES (3) MINUTOS.' : 'No Idling Policy: DO NOT keep your tractor running for more than THREE (3) MINUTES.';
+    document.getElementById('assigned-wait').innerText = language === 'fr' ? 'Si vous êtes affecté à la salle d\'attente ou si vous n\'avez pas encore de porte, veuillez taper le chiffre 0.' : language === 'es' ? 'Si está asignado al área de espera o aún no tiene puerta, escriba el número 0.' : 'If assigned to the waiting area or you don\'t have a door yet, please type the number 0.';
+
+    // Update the safety guidelines
+    document.getElementById('guideline1').innerText = translations[language].guideline1;
+    document.getElementById('guideline2').innerText = translations[language].guideline2;
+    document.getElementById('guideline3').innerText = translations[language].guideline3;
+    document.getElementById('guideline4').innerText = translations[language].guideline4;
+    document.getElementById('guideline5').innerText = translations[language].guideline5;
+}
+
+        function goToSafetyGuidelines() {
+            document.getElementById('language-selection').classList.add('hidden');
+            document.getElementById('safety-guidelines').classList.remove('hidden');
+        }
+
+        function submitInitials() {
+            const initialsInput = document.getElementById('initials').value;
+            if (initialsInput.trim() !== '') {
+                initials = initialsInput;
+                document.getElementById('safety-guidelines').classList.add('hidden');
+                document.getElementById('door-number-screen').classList.remove('hidden');
+            } else {
+                alert('Please enter your initials to proceed.');
+            }
+        }
+        function submitDoorNumber() {
+            const doorNumber = document.getElementById('doorNumber').value; // Updated ID here
+            if (doorNumber !== '') {
+                document.getElementById('door-number-screen').classList.add('hidden');
+                document.getElementById('directions-screen').classList.remove('hidden');
+                showDirections(doorNumber); // Call showDirections with the doorNumber
+            } else {
+                alert('Please enter a valid door number.');
+            }
+        }
+
+        function showDirections(doorNumber) { // Ensure doorNumber is passed as a parameter
+            doorNumber = parseInt(doorNumber); // Ensure the doorNumber is an integer
+
+            // Hide all direction messages initially
+            document.getElementById('waitingAreaMessage').style.display = 'none';
+            document.getElementById('whiteArrowDirections').style.display = 'none';
+            document.getElementById('yellowArrowDirections').style.display = 'none';
+
+            // Display the appropriate direction message based on the dock door number
+            if (doorNumber === 0) {
+                document.getElementById('waitingAreaMessage').style.display = 'block';
+            } else if (doorNumber >= 1 && doorNumber <= 33) {
+                document.getElementById('whiteArrowDirections').style.display = 'block';
+            } else if (doorNumber >= 34 && doorNumber <= 71) {
+                document.getElementById('yellowArrowDirections').style.display = 'block';
+            } else {
+                alert('Invalid dock door number. Please enter a number between 0 and 71.');
+            }
+        }
+        function proceedToNextSteps() {
+            document.getElementById('directions-screen').classList.add('hidden');
+            document.getElementById('next-steps-screen').classList.remove('hidden');
+        }
+
+        function goToHome() {
+            document.getElementById('language-selection').classList.add('hidden');
+            document.getElementById('safety-guidelines').classList.add('hidden');
+            document.getElementById('door-number-screen').classList.add('hidden');
+            document.getElementById('directions-screen').classList.add('hidden');
+            document.getElementById('next-steps-screen').classList.add('hidden');
+            document.getElementById('home-page').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
